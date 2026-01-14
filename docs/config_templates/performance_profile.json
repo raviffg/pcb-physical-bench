@@ -1,0 +1,14 @@
+{
+  "_template": "Performance profile",
+  "project": "pcb-physical-bench",
+  "purpose": "Configuration template for KiCad PCB physical verification beyond connectivity DRC",
+  "status": "template_only_not_a_validated_operating_profile",
+  "source_of_truth": "Confirm supported keys against the current implementation before use.",
+  "parameters": {},
+  "metadata": {
+    "revision": "",
+    "created_utc": "",
+    "owner": "",
+    "notes": "Do not use for hardware deployment until reviewed."
+  }
+}
