@@ -1,0 +1,29 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# KiCad artifacts
+*.kicad_prl
+*.kicad_pro
+*-backups/
+fp-info-cache
+*.gbr
+*.drl
+*.zip
+
+# generated verifier output
+board.agentic.json
+*.report.json
+reports/
+
+# tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+Thumbs.db
