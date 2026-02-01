@@ -1,0 +1,53 @@
+{
+  "corpus": "layout_trap_corpus_v1",
+  "note": "Every board has ratsnest = 0 and zero standard DRC violations. Three of four fail physically. A verifier that only re-runs connectivity scores 4/4 and is worthless.",
+  "thresholds": {
+    "loop_inductance_nh_max": 1.8,
+    "delta_t_c_max": 45.0,
+    "length_over_split_mm_max": 0.5,
+    "pad_to_via_mm_max": 2.2,
+    "z0_delta_pct_max": 10.0
+  },
+  "boards": [
+    {
+      "id": "board_a_clean",
+      "description": "8-layer HDI, USB3 + PCIe Gen4, continuous GND reference, 3.0 mm VBUS",
+      "ratsnest": 0, "standard_drc_violations": 0,
+      "return_path": {"pairs_over_split": 0, "length_over_split_mm": 0.0, "max_z0_delta_pct": 0.0},
+      "decoupling_loop": {"max_loop_inductance_nh": 1.524, "max_pad_to_via_mm": 1.35},
+      "current_density": {"max_delta_t_c": 7.6, "worst_net": "VBUS", "width_mm": 3.0, "internal": false},
+      "expected_verdict": "pass"
+    },
+    {
+      "id": "board_b_plane_split",
+      "description": "Same stackup, GND plane notched for a power island directly under the USB3 pair",
+      "ratsnest": 0, "standard_drc_violations": 0,
+      "return_path": {"pairs_over_split": 1, "length_over_split_mm": 18.7, "gap_mm": 0.60, "max_z0_delta_pct": 25.2},
+      "decoupling_loop": {"max_loop_inductance_nh": 1.557, "max_pad_to_via_mm": 1.50},
+      "current_density": {"max_delta_t_c": 7.6, "worst_net": "VBUS", "width_mm": 3.0, "internal": false},
+      "expected_verdict": "fail",
+      "trap": "Connectivity is complete. The pair still returns through a 0.60 mm slot, so loop inductance and common-mode conversion spike: radiated emissions fail at 2.4 GHz and the eye closes at 85 C."
+    },
+    {
+      "id": "board_c_loop_starved",
+      "description": "Bulk decoupling caps placed 4.10 mm from their GND vias to clear a keepout",
+      "ratsnest": 0, "standard_drc_violations": 0,
+      "return_path": {"pairs_over_split": 0, "length_over_split_mm": 0.0, "max_z0_delta_pct": 0.0},
+      "decoupling_loop": {"max_loop_inductance_nh": 2.204, "max_pad_to_via_mm": 4.10},
+      "current_density": {"max_delta_t_c": 7.6, "worst_net": "VBUS", "width_mm": 3.0, "internal": false},
+      "expected_verdict": "fail",
+      "trap": "2.204 nH pushes the 100 nF cap above self-resonance at the transient edge. PDN impedance peaks near 41 MHz; the rail sags 62 mV on a 12 A step and the SoC browns out at cold boot."
+    },
+    {
+      "id": "board_d_thermal_runaway",
+      "description": "4.7 A VBUS continuous on a 2.0 mm internal layer trace, 1 oz copper",
+      "ratsnest": 0, "standard_drc_violations": 0,
+      "return_path": {"pairs_over_split": 0, "length_over_split_mm": 0.0, "max_z0_delta_pct": 0.0},
+      "decoupling_loop": {"max_loop_inductance_nh": 1.524, "max_pad_to_via_mm": 1.35},
+      "current_density": {"max_delta_t_c": 71.6, "worst_net": "VBUS", "width_mm": 2.0, "internal": true},
+      "expected_verdict": "fail",
+      "trap": "IPC-2152 puts the internal trace at 71.6 C rise, so it runs near 112 C at 40 C ambient. FR-4 with Tg 170 C delaminates around via barrels after roughly 900 cycles. The same trace on an outer layer would read 24 C and pass."
+    }
+  ],
+  "scoring": {"metric": "trap_detection_rate", "passing_score": 1.0, "false_positive_budget": 0}
+}
