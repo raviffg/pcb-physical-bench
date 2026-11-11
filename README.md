@@ -42,10 +42,3 @@ Standard library only.
 Every trap board is DRC-clean by construction. A verifier that only re-runs
 connectivity scores 4/4 on them and is worthless. The corpus exists so the grader
 is measured on the physics it claims to check.
-
-
-## Expanded project documentation
-
-The `docs/` directory contains project-specific design notes, verification scenario specifications, operations guides, data contracts, configuration templates, safety notes, and project reference templates.
-
-**Important:** added documents are planning and review aids. They do not claim that tests have been executed, that placeholder configurations are supported runtime profiles, or that this project is certified for physical/clinical/production deployment. Confirm interfaces and limits against implementation and measured evidence.
